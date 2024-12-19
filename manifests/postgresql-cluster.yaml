@@ -29,6 +29,3 @@ spec:
     requests:
       memory: "4Gi"
       cpu: "700m"
-    limits:
-      memory: "4Gi"
-      cpu: "700m"
