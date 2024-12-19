@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dpl
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: grist
+  template:
+    metadata:
+      labels:
+        app: grist
+    spec:
+      automountServiceAccountToken: false
+      tolerations:
+        - key: "CriticalAddonsOnly"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      containers:
+      - name: grist
+        image: gristlabs/grist:1.3.2
+        ports:
+        - containerPort: 8484
+        env:
+        - name: TYPEORM_DATABASE
+          value: grist
+        - name: TYPEORM_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: sec-postgres
+              key: username
+        - name: TYPEORM_HOST
+          value: grist-cluster-db-rw
+        - name: TYPEORM_LOGGING
+          value: "false"
+        - name: TYPEORM_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: sec-postgres
+              key: password
+        - name: TYPEORM_PORT
+          value: "5432"
+        - name: TYPEORM_TYPE
+          value: "postgres"
+        - name: REDIS_URL
+          value: redis://grist-svc-redis
+        - name: GRIST_DOCS_MINIO_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sec-minio
+              key: minio_root_user
+        - name: GRIST_DOCS_MINIO_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: sec-minio
+              key: minio_root_password
+        - name: GRIST_DOCS_MINIO_USE_SSL
+          value: "0"
+        - name: GRIST_DOCS_MINIO_BUCKET
+          value: grist-docs
+        - name: GRIST_DOCS_MINIO_ENDPOINT
+          value: grist-svc-minio
+        - name: GRIST_DOCS_MINIO_PORT
+          value: "9000"
+        - name: APP_HOME_URL
+          value: "https://grist.la-suite.apps.digilab.network"
+        - name: GRIST_DEFAULT_EMAIL
+          value: "berry.hartog@rijksoverheid.nl"
+        - name: GRIST_SESSION_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: sec-grist
+              key: session_secret
+        - name: GRIST_OIDC_IDP_ISSUER
+          value: "https://id.la-suite.apps.digilab.network/realms/lasuite"
+        - name: GRIST_OIDC_IDP_CLIENT_ID
+          value: "grist"
+        - name: GRIST_OIDC_IDP_SCOPES
+          value: "openid profile email"
+        - name: GRIST_OIDC_IDP_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: sec-grist
+              key: oidc_secret
+        - name: GRIST_FORCE_LOGIN
+          value: "true"
+        - name: GRIST_ORG_IN_PATH
+          value: "true"
+        volumeMounts:
+        - name: grist-pv-storage
+          mountPath: /persist
+      volumes:
+      - name: grist-pv-storage
+        persistentVolumeClaim:
+          claimName: pvc

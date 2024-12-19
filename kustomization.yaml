@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: tn-openbsw-grist
+
+namePrefix: grist-
+
+buildMetadata: [originAnnotations]
+
+
+resources:
+  - manifests/deployment-minio.yaml
+  - manifests/deployment-redis.yaml
+  - manifests/deployment.yaml
+  - manifests/ingress.yaml
+  - manifests/postgresql-cluster.yaml
+  - manifests/pvc-minio.yaml
+  - manifests/pvc.yaml
+  - manifests/secret-minio.yaml
+  - manifests/service-minio.yaml
+  - manifests/service-redis.yaml
+  - manifests/service.yaml
+  - manifests/secret-postgres-super.yaml
+  - manifests/secret-postgres.yaml
+  - manifests/secret-grist.yaml
