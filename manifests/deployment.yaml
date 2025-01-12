@@ -77,6 +77,8 @@ spec:
               key: assistant_api_key
         - name: ASSISTANT_MODEL
           value: "gpt-4o-mini"
+        - name: GRIST_OFFER_ALL_LANGUAGES
+          value: "true"
         - name: GRIST_SESSION_SECRET
           valueFrom:
             secretKeyRef:
