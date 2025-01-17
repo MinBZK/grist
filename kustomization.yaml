@@ -7,7 +7,6 @@ namePrefix: grist-
 
 buildMetadata: [originAnnotations]
 
-
 resources:
   - manifests/deployment-minio.yaml
   - manifests/deployment-redis.yaml
