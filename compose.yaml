@@ -36,9 +36,9 @@ services:
   grist-db:
     image: postgres:alpine
     environment:
-        POSTGRES_DB: grist
-        POSTGRES_USER: grist
-        POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: grist
+      POSTGRES_USER: grist
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - ${PERSIST_DIR}/postgres:/var/lib/postgresql/data
 
@@ -54,8 +54,7 @@ services:
       MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     volumes:
       - ${PERSIST_DIR}/minio:/data
-    command:
-      server /data --console-address=":9001"
+    command: server /data --console-address=":9001"
 
   # This sets up the buckets required in MinIO. It is only needed to make this example work.
   # It isn't necessary for deployment and can be safely removed.
