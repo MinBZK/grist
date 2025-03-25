@@ -102,6 +102,10 @@ spec:
           volumeMounts:
             - name: grist-pv-storage
               mountPath: /persist
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "40m"
       volumes:
         - name: grist-pv-storage
           persistentVolumeClaim:

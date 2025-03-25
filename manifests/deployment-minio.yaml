@@ -35,6 +35,10 @@ spec:
                   key: minio_root_user
             - name: MINIO_BROWSER_LOGIN_ANIMATION
               value: "off"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "8m"
           volumeMounts:
             - name: minio-pv-storage
               mountPath: /data
