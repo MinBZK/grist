@@ -70,13 +70,15 @@ spec:
               value: "https://grist.la-suite.apps.digilab.network"
             - name: GRIST_DEFAULT_EMAIL
               value: "berry.hartog@rijksoverheid.nl"
+            - name: ASSISTANT_CHAT_COMPLETION_ENDPOINT
+              value: "https://api.ssc-ict-trial.ubiops.io/v2.1/projects/external-poc/openai-compatible/v1/chat/completions"
             - name: ASSISTANT_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: sec-grist
                   key: assistant_api_key
             - name: ASSISTANT_MODEL
-              value: "gpt-4o-mini"
+              value: "ubiops-deployment/bzk-openbsw-chat//llama-3.3-70b-instruct-awq"
             - name: GRIST_OFFER_ALL_LANGUAGES
               value: "true"
             - name: GRIST_SESSION_SECRET
